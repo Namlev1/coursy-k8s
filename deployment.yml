@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-auth-service
+  namespace: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client-auth-service
+  template:
+    metadata:
+      labels:
+        app: client-auth-service
+    spec:
+      containers:
+      - name: client-auth-service
+        image: client-auth-service:latest
+        imagePullPolicy: Never  # Important for local images
+        ports:
+        - containerPort: 8080
+        env:
+        # - name: SPRING_PROFILES_ACTIVE
+        #   valueFrom:
+        #     configMapKeyRef:
+        #       name: client-auth-config
+        #       key: spring-profiles
+        - name: APP_INIT_ROLES
+          valueFrom:
+            configMapKeyRef:
+              name: client-auth-config
+              key: roles
+        # Add database connection if needed
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:postgresql://host.docker.internal:10001/auth_db"
+
+        # Probes
+        # readinessProbe:
+        #   httpGet:
+        #     path: /actuator/health
+        #     port: 8080
+        #   initialDelaySeconds: 30
+        #   periodSeconds: 10
+        # livenessProbe:
+        #   httpGet:
+        #     path: /actuator/health
+        #     port: 8080
+        #   initialDelaySeconds: 60
+        #   periodSeconds: 30
