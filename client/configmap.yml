@@ -4,5 +4,5 @@ metadata:
   name: client-auth-config
   namespace: client
 data:
-  roles: "PLATFORM_OWNER,ADMIN,INSTRUCTOR,STUDENT"
+  roles: "STUDENT, TEACHER, SUPER_ADMIN, ADMIN"
   # spring-profiles: "init"
