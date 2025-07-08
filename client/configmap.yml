@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: client-auth-config
-  namespace: client
-data:
-  roles: "STUDENT, TEACHER, SUPER_ADMIN, ADMIN"
-  # spring-profiles: "init"
