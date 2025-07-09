@@ -1,0 +1,20 @@
+# ConfigMap for application configuration
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: platforms-app-config
+  namespace: coursy
+data:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://platforms-db-service:5432/platforms_db
+  SPRING_DATASOURCE_USERNAME: postgres
+  SPRING_JPA_HIBERNATE_DDL_AUTO: update
+---
+# Secret for application database password
+apiVersion: v1
+kind: Secret
+metadata:
+  name: platforms-app-secret
+  namespace: coursy
+type: Opaque
+data:
+  SPRING_DATASOURCE_PASSWORD: cG9zdGdyZXM= # base64 encoded "postgres"
