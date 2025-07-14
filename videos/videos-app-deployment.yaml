@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: videos-app
+  namespace: coursy
+  labels:
+    app: videos-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: videos-app
+  template:
+    metadata:
+      labels:
+        app: videos-app
+    spec:
+      containers:
+        - name: videos
+          image: videos:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            # Database config
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: videos-app-config
+                  key: SPRING_DATASOURCE_URL
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: videos-app-config
+                  key: SPRING_DATASOURCE_USERNAME
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: videos-app-secret
+                  key: SPRING_DATASOURCE_PASSWORD
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              valueFrom:
+                configMapKeyRef:
+                  name: videos-app-config
+                  key: SPRING_JPA_HIBERNATE_DDL_AUTO
+            # MinIO config
+            - name: MINIO_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: videos-app-config
+                  key: MINIO_ENDPOINT
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: videos-app-secret
+                  key: MINIO_ACCESS_KEY
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: videos-app-secret
+                  key: MINIO_SECRET_KEY
+            - name: MINIO_BUCKET_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: videos-app-config
+                  key: MINIO_BUCKET_NAME
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "250m"

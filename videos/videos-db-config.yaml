@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: videos-db-config
+  namespace: coursy
+data:
+  POSTGRES_DB: videos_db
+  POSTGRES_USER: postgres
+---
+# Secret for database password
+apiVersion: v1
+kind: Secret
+metadata:
+  name: videos-db-secret
+  namespace: coursy
+type: Opaque
+data:
+  POSTGRES_PASSWORD: cG9zdGdyZXM= # base64 encoded "postgres"
