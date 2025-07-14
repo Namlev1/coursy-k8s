@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: minio-config
+  namespace: coursy
+data:
+  MINIO_ROOT_USER: minioadmin
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: minio-secret
+  namespace: coursy
+type: Opaque
+data:
+  MINIO_ROOT_PASSWORD: bWluaW9hZG1pbg== # base64 encoded "minioadmin"
